@@ -24,7 +24,7 @@ async def joke(ctx,text=""):
             #Based on query
             q = text
             response = jokes_bases_on_query(q)
-            if (response == "" or response is None):
+            if (response == "null"):
                 response = ctx.message.author.name + " sucks"
         else:
             response = get_random_joke()
@@ -49,6 +49,8 @@ def jokes_bases_on_query(query):
 
     if val.ok:
         x = json.loads(val.text, object_hook=lambda d: SimpleNamespace(**d))
+        if(x.total == 0):
+            return "null"
         return x.result[random.randrange(x.total)].value
     else:
         if query == "" or query == " ":
